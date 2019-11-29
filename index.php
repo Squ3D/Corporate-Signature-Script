@@ -1,15 +1,44 @@
 <?php
+
+//@author Ngallouj basé sur un projet Github.
 if (!empty($_REQUEST['Sender'])):
     //Stockage des cookie pour la requête
     $sender = $_REQUEST['Sender'];
 
     //Déclaration du chemin d'accées du Layout (Structure de la page)
+    // Le layout correspond au code de la signature en HTML
+    // Pour créer un nouveau Layout : $layout(id) = file_get[...] et remplacer uniquement le chemin d'accées de votre nouvel signature.
     $layout = file_get_contents('./SIG/SEE.html', FILE_USE_INCLUDE_PATH);
     $layout1 = file_get_contents('./SIG/GUIL.html', FILE_USE_INCLUDE_PATH);
     $layout2 = file_get_contents('./SIG/SAELEN.html', FILE_USE_INCLUDE_PATH);
     $layout3 = file_get_contents('./SIG/SEEPROD.html', FILE_USE_INCLUDE_PATH);
+    $layout4 = file_get_contents('./SIG/TS.html', FILE_USE_INCLUDE_PATH);
+    $layout5 = file_get_contents('./SIG/SCH.html', FILE_USE_INCLUDE_PATH);
+   
+
+//Pour information le code Suivant en Html nous permet de gérer les entreprise du groupe, chaque Sélection a une valeur par exemple 
+    //pour la signature du groupe SEE la valeur est "value1"
+    //Si vous ajoutez une nouvelle signature vous devez ajouter une nouvelle option avec sa valeur respective.
+    //=========================================================================================================
+    //ATTENTION CE CODE EST UNIQUEMENT A TITRE explicatif IL NE DOIT PAS ETRE MODIFIER ICI MAIS PLUS BAS ctrl+f
+    //=========================================================================================================
+    //<select name="select" class="form-control" id="sel1">
+     //                       <option value="value1">SEE</option>
+       //                     <option value="value2">Guillebert</option>
+
+    //                            <option value="value3">Saelen</option>
+  //                          <option value="value4">SEE Produktion</option>
+    //                        <option value="value5">TS-Industrie</option>
+      //                      <option value="value6">Schliesing</option>
+    //               </select>
+
+    //Ces conditions permettent de changer la valeur de la variable layout
+    // en fonction du choix de l'utilisateur sans avoir à recharger la page
+
+
 
     if(isset($_POST['select']))
+    
     {
         if($_POST['select'] == 'value2')
         {
@@ -18,12 +47,41 @@ if (!empty($_REQUEST['Sender'])):
         }
         if($_POST['select'] == 'value3') {
         $layout = $layout2;
-    }
-    if($_POST['select'] == 'value4') {
+        }
+        
+        if($_POST['select'] == 'value4') {
         $layout = $layout3;
+                                         } 
+                                   
+        if($_POST['select'] == 'value5') {
+        $layout = $layout4;
+                                         } 
+                                   
+        if($_POST['select'] == 'value6') {
+        $layout = $layout5;
+                                         } 
+ 
+   }
+
+
+   //Admettons que je veuilles rajouter une nouvelle signature je vais donc ajouter une nouvelle conditions.
+
+  /*
+  *
+   if($_POST['select'] == 'value7') {
+        $layout = $layout6;
                                    } 
+
+
+  */
+                                   
   
-                                       }
+                                       
+
+
+                                       //--->Le code suivant n'est pas à modifier, il va seulement 
+                                       //d'écrire dans la Structure Layout du fichier HTML lorsque l'utilisateur
+                                       // enverra ses informations sur le serveur.
 
 
 
@@ -33,26 +91,24 @@ if (!empty($_REQUEST['Sender'])):
         $end_if      = strpos($layout, '[[ENDIF-' . $key . ']]');
         $length      = strlen('[[ENDIF-' . $key . ']]');
         if (!empty($value)) {
-            // Add the value at its proper location.
+            //Ajoute la valeur entrer entre les Crochets
             $layout = str_replace('[[IF-' . $key . ']]', '', $layout);
             $layout = str_replace('[[ENDIF-' . $key . ']]', '', $layout);
             $layout = str_replace('[[' . $key . ']]', $value, $layout);
         } elseif (is_numeric($start_if)) {
-            // Remove the placeholder and brackets if there is an if-statement but no value.
+            // Supprime les crochets si il n'y a pas de valeur
             $layout = str_replace(substr($layout, $start_if, $end_if - $start_if + $length), '', $layout);
         } else {
-            // Remove the placeholder if there is no value.
             $layout = str_replace('[[' . $key . ']]', '', $layout);
         }
     }
-
-    // Clean up any leftover placeholders. This is useful for booleans,
-    // which are not submitted if left unchecked.
     $layout = preg_replace("/\[\[IF-(.*?)\]\]([\s\S]*?)\[\[ENDIF-(.*?)\]\]/u", "", $layout);
 
     if (!empty($_REQUEST['download'])) {
         header('Content-Description: File Transfer');
         header('Content-Type: text/html');
+        //Si vous voulez changer le nom de la signature télécharger 
+        //header('Content-Disposition: attachment; filename=NOUVEAUNOMDESIGNATURE.html');
         header('Content-Disposition: attachment; filename=SEEsignature.html');
         header('Content-Transfer-Encoding: binary');
         header('Expires: 0');
@@ -73,74 +129,12 @@ else:
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
-        <meta name="author" content="Naïm Gallouj, Julien Guislain-Pawloski">
+        <meta name="author" content="Naïm Gallouj, Julien Guislain-Pawlowski">
 
         <title>SEE Mail Signature</title>
 
-        <!-- Bootstrap core CSS -->
         <link href="./style.css" rel="stylesheet">
 
-        <!-- Custom styles for this template -->
-        <style type="text/css">
-            /* Sticky footer styles
-            -------------------------------------------------- */
-
-            html,
-            body {
-                height: 100%;
-                font-family: Arial;
-                /* The html and body elements cannot have any padding or margin. */
-            }
-
-            /* Wrapper for page content to push down footer */
-            #wrap {
-                min-height: 100%;
-                height: auto !important;
-                height: 100%;
-                /* Negative indent footer by its height */
-                margin: 0 auto -60px;
-                /* Pad bottom by footer height */
-                padding: 0 0 60px;
-            }
-
-            /* Set the fixed height of the footer here */
-            #footer {
-                height: 60px;
-                background-color: #f5f5f5;
-            }
-
-
-            /* Custom page CSS
-            -------------------------------------------------- */
-            /* Not required for template or sticky footer method. */
-
-            #wrap > .container {
-                padding: 60px 15px 0;
-            }
-            .container .credit {
-                margin: 20px 0;
-            }
-
-            #footer > .container {
-                padding-left: 15px;
-                padding-right: 15px;
-            }
-            .btn.btn-primary {
-                color: #fff !important;
-                background-color: #3f7644 !important;
-            }
-            .btn.btn-default{
-                color: #3f7644 !important;
-            }
-            code {
-                font-size: 80%;
-            }
-
-            .siggy{
-                font-weight: bold;
-                font-family: Helvetica;
-            }
-        </style>
 
     </head>
 
@@ -177,6 +171,8 @@ else:
 
                             <option value="value3">Saelen</option>
                             <option value="value4">SEE Produktion</option>
+                            <option value="value5">TS-Industrie</option>
+                            <option value="value6">Schliesing</option>
                         </select>
                     </div>
                 </div>
