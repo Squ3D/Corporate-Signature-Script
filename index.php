@@ -4,88 +4,66 @@
 if (!empty($_REQUEST['Sender'])):
     //Stockage des cookie pour la requête
     $sender = $_REQUEST['Sender'];
-
-    //Déclaration du chemin d'accées du Layout (Structure de la page)
-    // Le layout correspond au code de la signature en HTML
-    // Pour créer un nouveau Layout : $layout(id) = file_get[...] et remplacer uniquement le chemin d'accées de votre nouvel signature.
     $layout = file_get_contents('./SIG/SEE.html', FILE_USE_INCLUDE_PATH);
     $layout1 = file_get_contents('./SIG/GUIL.html', FILE_USE_INCLUDE_PATH);
     $layout2 = file_get_contents('./SIG/SAELEN.html', FILE_USE_INCLUDE_PATH);
     $layout3 = file_get_contents('./SIG/SEEPROD.html', FILE_USE_INCLUDE_PATH);
     $layout4 = file_get_contents('./SIG/TS.html', FILE_USE_INCLUDE_PATH);
     $layout5 = file_get_contents('./SIG/SCH.html', FILE_USE_INCLUDE_PATH);
-   
-
-//Pour information le code Suivant en Html nous permet de gérer les entreprise du groupe, chaque Sélection a une valeur par exemple 
-    //pour la signature du groupe SEE la valeur est "value1"
-    //Si vous ajoutez une nouvelle signature vous devez ajouter une nouvelle option avec sa valeur respective.
-    //=========================================================================================================
-    //ATTENTION CE CODE EST UNIQUEMENT A TITRE explicatif IL NE DOIT PAS ETRE MODIFIER ICI MAIS PLUS BAS ctrl+f
-    //=========================================================================================================
-    //<select name="select" class="form-control" id="sel1">
-     //                       <option value="value1">SEE</option>
-       //                     <option value="value2">Guillebert</option>
-
-    //                            <option value="value3">Saelen</option>
-  //                          <option value="value4">SEE Produktion</option>
-    //                        <option value="value5">TS-Industrie</option>
-      //                      <option value="value6">Schliesing</option>
-    //               </select>
-
-    //Ces conditions permettent de changer la valeur de la variable layout
-    // en fonction du choix de l'utilisateur sans avoir à recharger la page
-
-
-
-    if(isset($_POST['select']))
+    
+    $nom = $POST['Nom'];
+    $extension = "@groupesee.com";
+    $extension1 ="@guillebert.fr";
+    $extension2 = "@salen.fr";
+    $extension3 = "@seeprodukition.com";
+    $extension4 = "@tsindustries.com";
+    $extension5 = "@schliesing.com";
+       if(isset($_POST['select']))
     
     {
+   
         if($_POST['select'] == 'value2')
         {
+            
+            //SEE
             $layout = $layout1;
+            $extension = $extension1;
 
         }
         if($_POST['select'] == 'value3') {
+        //GUIL
         $layout = $layout2;
+        $extension = $extension2;
+        echo $nom;
+        echo $prenom;
         }
         
         if($_POST['select'] == 'value4') {
+        //SAELEN
         $layout = $layout3;
+        $extension = $extension3;
+        echo $nom;
+        echo $prenom;
                                          } 
                                    
         if($_POST['select'] == 'value5') {
+        
+        //TS INDUS
         $layout = $layout4;
+        $extension = $extension4;
+        echo $nom;
+        echo $prenom;
                                          } 
                                    
         if($_POST['select'] == 'value6') {
+        //schliesing
         $layout = $layout5;
+        $extension = $extension5;
+        $nom = $POST['Nom'];
+        $prenom = $POST['Prenom'];
                                          } 
- 
-   }
-
-
-   //Admettons que je veuilles rajouter une nouvelle signature je vais donc ajouter une nouvelle conditions.
-
-  /*
-  *
-   if($_POST['select'] == 'value7') {
-        $layout = $layout6;
-                                   } 
-
-
-  */
-                                   
-  
-                                       
-
-
-                                       //--->Le code suivant n'est pas à modifier, il va seulement 
-                                       //d'écrire dans la Structure Layout du fichier HTML lorsque l'utilisateur
-                                       // enverra ses informations sur le serveur.
-
-
-
-    foreach ($sender as $key => $value) {
+    }
+        foreach ($sender as $key => $value) {
         $key         = strtoupper($key);
         $start_if    = strpos($layout, '[[IF-' . $key . ']]');
         $end_if      = strpos($layout, '[[ENDIF-' . $key . ']]');
@@ -107,29 +85,22 @@ if (!empty($_REQUEST['Sender'])):
     if (!empty($_REQUEST['download'])) {
         header('Content-Description: File Transfer');
         header('Content-Type: text/html');
-        //Si vous voulez changer le nom de la signature télécharger 
-        //header('Content-Disposition: attachment; filename=NOUVEAUNOMDESIGNATURE.html');
-        header('Content-Disposition: attachment; filename=SEEsignature.html');
+        header('Content-Disposition: attachment; filename=SEEsignature.htm');
         header('Content-Transfer-Encoding: binary');
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Pragma: public');
     }
-
-    echo $layout;
+  echo $layout;
 else:
 
     ?>
-    
-    <!-- Nous utilisons le Framework BootStrap pour le CSS !-->
-
-    <!DOCTYPE html>
     <html lang="fr">
     <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
-        <meta name="author" content="Naïm Gallouj, Julien Guislain-Pawlowski">
+        <meta name="author" content="Naïm Gallouj,Julien Guislain-Pawlowski">
 
         <title>SEE Mail Signature</title>
 
@@ -165,42 +136,89 @@ else:
                     <label for="Name" class="control-label col-xs-2">Company</label>
 
                     <div class="col-xs-10">
-                        <select name="select" class="form-control" id="sel1">
-                            <option value="value1">SEE</option>
-                            <option value="value2">Guillebert</option>
-
-                            <option value="value3">Saelen</option>
-                            <option value="value4">SEE Produktion</option>
-                            <option value="value5">TS-Industrie</option>
-                            <option value="value6">Schliesing</option>
+                        <select name="select" class="form-control" id="selecto">
+                            <option value="value1" id="1">SEE</option>
+                            <option value="value2" id = "2">Guillebert</option>
+                            <option value="value3" id = "3">Saelen</option>
+                            <option value="value4" id ="4">SEE Produktion</option>
+                            <option value="value5" id ="5">TS-Industrie</option>
+                            <option value="value6" id="6">Schliesing</option>
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="Name" class="control-label col-xs-2"> Firstname </label>
-                    <div class="col-xs-10">
-                        <input type="text" class="form-control" id="NOM" name="Sender[name1]" placeholder="Enter your firstname" required="true">
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="Name"  class="control-label col-xs-2">Name </label>
-                    <div class="col-xs-10">
-                        <input type="text"  onkeyup="this.value = this.value.toUpperCase();" class="form-control" id="PRENOM" name="Sender[name]" placeholder="Enter your name" required="true">
-                    </div>
-                </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    
+    <div class="form-group">
+                    <label for="Name" class="control-label col-xs-2">Firstname</label>
+      <div class="col-xs-10">
+<input type="text"  class="form-control" id="field1" name="Sender[name1]" value="">
+</div>
+</div>
+ <div class="form-group">
+                    <label for="Name" class="control-label col-xs-2"> Name</label>
+   <div class="col-xs-10">
+<p></p><input type="text" onkeyup="this.value = this.value.toUpperCase();" class="form-control" id="field2" name="Sender[name]" value="">
+</div>
+</div>
+ <div class="form-group">
+                    <label for="Name" class="control-label col-xs-2"> Email</label>
+   <div class="col-xs-10">
+<input type="text" onkeyup="this.value = this.value.toLowerCase();" class="form-control" id="result" name="Sender[email]" value="">
+    </div>
+    </div>
+    <script type="text/javascript">
+    var a = "groupesee.com";
+    var b = "guillebert.fr";
+    var c = "@saelen.fr"; 
+    var d = "@see-produktion.net;"
+    var e = "@ts-industrie.de";
+    var g = "@schliesing.net";
+    var x;
+    
+        $("#field1, #field2").keyup(function(){
+    update();
+});
+
+function update() {
+      var a = "@groupesee.com";
+    var b = "@guillebert.fr";
+    var c = "@saelen.fr"; 
+    var d = "@see-produktion.net;"
+    var e = "@ts-industrie.de";
+    var g = "@schliesing.net";
+    var x;
+    
+     var elt = document.getElementById(selecto);
+     if(document.getElementById('selecto').value == "value1") {
+     x = a;
+   
+   } if(document.getElementById('selecto').value == "value2") {
+     x = b;
+}
+    if(document.getElementById('selecto').value == "value3") {
+     x = c;
+}
+ if(document.getElementById('selecto').value == "value4") {
+     x = d;
+}
+ if(document.getElementById('selecto').value == "value5") {
+     x = e;
+}
+ if(document.getElementById('selecto').value == "value6") {
+     x = g;
+}
+
+  $("#result").val($('#field1').val().substr(0,1).toLowerCase() + $('#field2').val().toLowerCase()+x);
+}
+    </script>
+
+
+
                 <div class="form-group">
                     <label for="Name" class="control-label col-xs-2"> Job</label>
                     <div class="col-xs-10">
                         <input type="text" class="form-control" id="POSITION" name="Sender[position]" placeholder="Enter your position" required="true">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="Name" class="control-label col-xs-2">Email</label>
-                    <div class="input-group col-xs-10">
-                        <input type="text" class="form-control" id="Email" name="Sender[email]" placeholder="Enter your email adress" aria-describedby="basic-addon2" required="true">
-                        <span class="input-group-addon" id="basic-addon2"></span>
                     </div>
                 </div>
 
@@ -253,6 +271,7 @@ else:
     </div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $( document ).ready(function() {
